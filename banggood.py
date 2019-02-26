@@ -1,5 +1,6 @@
 from urllib.request import urlopen
 import bs4
+import sys
 
 page = "https://www.banggood.com/Flashdeals.html"
 title_lenght = 10
@@ -29,14 +30,16 @@ class WebClient(object):
 			act_list.append((title.text[:title_lenght], "Offer: " + price_offer.text, "Regular: "+price_regular.text))
 
 		return act_list
-		#print(price.text)
-		#print(title.text)
 
 	def show_products(self, page):
 		downloaded_page = self.download_page(page)
 		data = self.search_acts(downloaded_page)
+
+		#Replace the print with the future actions such as show in TG
 		print(data)
 
 if __name__ == "__main__":
+	if len(sys.argv) > 1:
+		title_lenght = int(sys.argv[1])
 	c = WebClient()
 	c.show_products(page)
