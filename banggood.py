@@ -1,10 +1,11 @@
 from urllib.request import urlopen
 import bs4
 
-#open weather map api
+page = "https://www.banggood.com/Flashdeals.html"
+title_lenght = 10
 
 class WebClient(object):
-
+	'''Class manager of the Web page given'''
 	def __init__(self):
 		super(WebClient, self).__init__()
 
@@ -22,19 +23,20 @@ class WebClient(object):
 		act_list = []
 
 		for i in range(5):
-			price = elems_li[i].find("span", "price")
+			price_offer = elems_li[i].find("span", "price")
+			price_regular = elems_li[i].find("span", "price_old")
 			title = elems_li[i].find("span", "title")
-			act_list.append((title.text, price.text))
+			act_list.append((title.text[:title_lenght], "Offer: " + price_offer.text, "Regular: "+price_regular.text))
+
 		return act_list
 		#print(price.text)
 		#print(title.text)
 
-	def run(self, page):
-		page = self.download_page(page)
-		data = self.search_acts(page)
-		
+	def show_products(self, page):
+		downloaded_page = self.download_page(page)
+		data = self.search_acts(downloaded_page)
 		print(data)
 
 if __name__ == "__main__":
 	c = WebClient()
-	c.run("https://www.banggood.com/Flashdeals.html")
+	c.show_products(page)
